@@ -9,18 +9,14 @@ function App() {
   const [dice, setDice] = React.useState( allNewDice() )
   const [tenzies, setTenzies] = React.useState(false)
   const [count, setCount] = React.useState(0)
+  // const [niveau, setNiveau] = React.useState('')
 
   React.useEffect( () => {
     const allHeld = dice.every( di => di.isHeld)
     const choosedNumber = dice[0].number
     const allNumber = dice.every( di => di.number === choosedNumber)
     if(allHeld && allNumber) { setTenzies( true) }
-    console.log(choosedNumber, allHeld, allNumber)
   }, [dice])
-
-  // React.useEffect(()=> {
-  //   console.log('tenzies', tenzies)
-  // }, [tenzies])
 
   function allNewDice() {
     const allDice = [];
@@ -36,24 +32,27 @@ function App() {
   }
 
   // function level(event) {
-  //   console.log(event)
+  //   setNiveau(event.target.innerText)
   // }
 
   function rollDice() {
     if(tenzies) {
       setDice(allNewDice())
       setTenzies(false)
-      console.log('reload')
     }
 
+    // if(niveau === "Facile") {
+    //   var L = [0,0,0,0,0,0];
+      
+    //   dice.map( (di) =>  L[di.number -1] = L[di.number -1] + 1)
+    //   var max = Math.max(...L)
+    //   var i = L.indexOf(max)
+    // }
     
     setDice( oldDice => oldDice.map(
-      di => {
-        return di.isHeld ? di : newDice()
-      }
+      di => { return di.isHeld ? di : newDice() }
     ))
     setCount(count+1)
-    console.log(count)
   }
 
   function holdDice(idDice) {
@@ -64,24 +63,8 @@ function App() {
         }
       ))
     }
-    // setDice((prevDice) => {
-    //   const newDice = []
-    //   for(let i=0; i<prevDice.length; i++) {
-    //     let oldDice = prevDice[i]
-    //     if (oldDice.id === e.currentTarget.id) {
-          
-    //       newDice.push({...oldDice, isHeld: !isHeld})
-          
-    //     }else {
-    //       newDice.push(oldDice)
-    //       console.log(newDice)
-    //     }
-    //   }
-    //   console.log('end set:', newDice)
-    //   return newDice
-    // })
   }
-  console.log(dice)
+
   const diceElements = dice.map(
    (di)  => <Dice holdDice={holdDice} id={di.id} key={di.id} number={di.number} isHeld={di.isHeld}/>
   )
@@ -90,6 +73,10 @@ function App() {
     <main className="main">
       <div className="dice-header">
         <h1>Tenzies</h1>
+        {/* <div>
+          <button onClick={level}>Facile</button>
+          <button onClick={level}>Moyen</button>
+        </div> */}
         <Timer time={59} tenzies={tenzies}/>
         { tenzies ?
           <p>Congratulation, You Won !!!</p> : 
@@ -107,5 +94,4 @@ function App() {
     </main>
   );
 }
-
 export default App;
